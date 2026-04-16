@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <defs>
+    <linearGradient id="vL" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="vR" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E0E0E0"/>
+      <stop offset="100%" stop-color="#B8B8B8"/>
+    </linearGradient>
+    <radialGradient id="dg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF1744" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- V mark — bold metallic strokes -->
+  <line x1="12" y1="8" x2="20" y2="30" stroke="url(#vL)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="28" y1="8" x2="20" y2="30" stroke="url(#vR)" stroke-width="2" stroke-linecap="round"/>
+  <!-- Dot glow -->
+  <circle cx="20" cy="30" r="6" fill="url(#dg)"/>
+  <!-- Vermillion dot -->
+  <circle cx="20" cy="30" r="2.5" fill="#FF1744"/>
+  <circle cx="20" cy="30" r="1" fill="#fff" opacity="0.3"/>
+</svg>

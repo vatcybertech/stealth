@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="cornerSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#999"/>
+      <stop offset="100%" stop-color="#555"/>
+    </linearGradient>
+    <linearGradient id="cornerHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#AAA"/>
+      <stop offset="100%" stop-color="#666"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="none" stroke="url(#cornerSheen)" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- Corner bracket lines -->
+    <path d="M 4,4 L 4,35" stroke-width="2.5" stroke="#888"/>
+    <path d="M 4,4 L 35,4" stroke-width="2.5" stroke="#888"/>
+
+    <!-- Corner finial dot -->
+    <circle cx="4" cy="4" r="3" fill="#C0C0C0" stroke="#666" stroke-width="1"/>
+
+    <!-- Primary sweeping scroll — diagonal -->
+    <path d="M 10,10 C 18,18 22,35 22,50 C 22,62 16,68 12,72" stroke-width="2.2"/>
+    <!-- Curl terminus -->
+    <path d="M 12,72 C 8,78 10,84 16,82" stroke-width="1.8"/>
+    <circle cx="17" cy="81" r="2" fill="#888" stroke="none"/>
+
+    <!-- Secondary scroll along top -->
+    <path d="M 10,10 C 18,18 35,22 50,22 C 62,22 68,16 72,12" stroke-width="2.2"/>
+    <!-- Curl terminus -->
+    <path d="M 72,12 C 78,8 84,10 82,16" stroke-width="1.8"/>
+    <circle cx="81" cy="17" r="2" fill="#888" stroke="none"/>
+
+    <!-- Inner diagonal flourish -->
+    <path d="M 15,15 C 25,25 30,45 28,60" stroke-width="1.5"/>
+    <path d="M 28,60 C 26,68 30,72 35,68" stroke-width="1.3"/>
+    <circle cx="36" cy="67" r="1.5" fill="#666" stroke="none"/>
+
+    <path d="M 15,15 C 25,25 45,30 60,28" stroke-width="1.5"/>
+    <path d="M 60,28 C 68,26 72,30 68,35" stroke-width="1.3"/>
+    <circle cx="67" cy="36" r="1.5" fill="#666" stroke="none"/>
+
+    <!-- Deep inner scroll — tighter curl -->
+    <path d="M 20,20 C 28,32 26,48 24,55" stroke-width="1.2" stroke="#888"/>
+    <path d="M 20,20 C 32,28 48,26 55,24" stroke-width="1.2" stroke="#888"/>
+
+    <!-- Outer decorative arcs -->
+    <path d="M 6,40 C 8,46 6,54 4,58" stroke-width="1" stroke="#666"/>
+    <circle cx="4" cy="59" r="1.2" fill="#666" stroke="none"/>
+
+    <path d="M 40,6 C 46,8 54,6 58,4" stroke-width="1" stroke="#666"/>
+    <circle cx="59" cy="4" r="1.2" fill="#666" stroke="none"/>
+
+    <!-- Spine accent along the diagonal -->
+    <path d="M 30,30 C 38,38 42,50 40,62" stroke-width="1" stroke="#444"/>
+    <path d="M 30,30 C 38,38 50,42 62,40" stroke-width="1" stroke="#444"/>
+
+    <!-- Tiny leaf/petal shapes near the corner -->
+    <path d="M 8,22 C 12,20 14,24 10,26" stroke-width="1" fill="#444"/>
+    <path d="M 22,8 C 20,12 24,14 26,10" stroke-width="1" fill="#444"/>
+
+    <!-- Dot accents along scrollwork -->
+    <circle cx="14" cy="42" r="1" fill="#C0C0C0" stroke="none"/>
+    <circle cx="42" cy="14" r="1" fill="#C0C0C0" stroke="none"/>
+    <circle cx="22" cy="34" r="1" fill="#888" stroke="none"/>
+    <circle cx="34" cy="22" r="1" fill="#888" stroke="none"/>
+
+    <!-- Outermost trailing wisps -->
+    <path d="M 4,80 C 6,85 4,92 8,95" stroke-width="0.8" stroke="#444"/>
+    <circle cx="9" cy="96" r="1" fill="#444" stroke="none"/>
+
+    <path d="M 80,4 C 85,6 92,4 95,8" stroke-width="0.8" stroke="#444"/>
+    <circle cx="96" cy="9" r="1" fill="#444" stroke="none"/>
+
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.prompt // \"\"' | grep -iqE 'fix all (the )?(errors|bugs)|fix everything|audit and fix' && cat <<'HOOK' || true\n{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"TRIGGERED: Full App Audit Protocol. Launch 5 agents IN PARALLEL in a single message:\\n\\nAgent 1 - Data integrity & save/load: Read index.html thoroughly. Audit every localStorage round-trip (save/load/delete), every save() call path, export/import coverage for ALL data stores (clients, sessions, schedule, programs, workouts, mealPlans, reminders), orphaned reference cleanup on delete (client deletion must cascade to sessions, schedule, programs, workouts, meals, reminders). Check for data loss scenarios where user input could be lost.\\n\\nAgent 2 - Navigation & render chain: Read index.html thoroughly. Audit every go()/push()/pop() flow, verify render priority chains (renderNutrition checks _editProgram then _editWorkout then _editMealPlan), verify flag cleanup on tab switch in _doGoTab, trace back button at every navigation depth, verify all state flags (_editProgram, _editWorkout, _editMealPlan, _editDay, _addingSession, etc.) are properly set and cleared.\\n\\nAgent 3 - Function & onclick audit: Read index.html thoroughly. Extract EVERY onclick/onchange/oninput/onfocus/onblur handler from HTML strings and verify each references an existing function. Check all showModal/showConfirm/showDoubleConfirm/showPrompt callback functions exist. Verify no typos in function names.\\n\\nAgent 4 - Program builder & sections: Read index.html thoroughly. Audit all 8 section types (training, nutrition, anabolics, peptides, fatloss, supplements, water, protocol) for complete CRUD. Verify PDF builder covers all sections. Verify client assignment/unassignment auto-populates correctly. Verify sub-editor render priority (renderProgramBuilder must check _editWorkout and _editMealPlan BEFORE rendering sections).\\n\\nAgent 5 - CSS & desktop/mobile: Read index.html thoroughly. Audit responsive breakpoints (480px, 900px), touch targets (minimum 44px on mobile), z-index stacking order, theme CSS variable usage (no hardcoded colors), XSS escaping (all user input through esc()), empty states for every view, modal system (showModal scrolling, close behavior, sizing).\\n\\nAfter ALL 5 agents complete, fix EVERY bug found. Then validate JS syntax with: sed -n '/<script>/,/<\\\\/script>/p' index.html | sed '1d;$d' > /tmp/bigmike_js.js && node -c /tmp/bigmike_js.js\\n\\nCommit and push all fixes.\"}}\nHOOK",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

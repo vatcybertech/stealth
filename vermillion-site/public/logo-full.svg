@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 340" fill="none">
+  <defs>
+    <!-- Arch gradient — bold chrome with neon bleed at base -->
+    <linearGradient id="archGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F0F0F0" stop-opacity="0.85"/>
+      <stop offset="35%" stop-color="#C0C0C0" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#888888" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0.45"/>
+    </linearGradient>
+    <!-- Arch inner highlight — subtle chrome reflection -->
+    <linearGradient id="archHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.25"/>
+      <stop offset="50%" stop-color="#D0D0D0" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0.08"/>
+    </linearGradient>
+    <!-- V left stroke — metallic silver -->
+    <linearGradient id="vLeftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E8E8E8"/>
+      <stop offset="40%" stop-color="#B0B0B0"/>
+      <stop offset="100%" stop-color="#D0D0D0"/>
+    </linearGradient>
+    <!-- V right stroke — slightly brighter for asymmetric metallic feel -->
+    <linearGradient id="vRightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F0F0F0"/>
+      <stop offset="40%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#E0E0E0"/>
+    </linearGradient>
+    <!-- Dot glow layers -->
+    <radialGradient id="dotGlowOuter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF1744" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="dotGlowInner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF1744" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Text gradient — metallic -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F0F0F0"/>
+      <stop offset="50%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#E8E8E8"/>
+    </linearGradient>
+    <!-- Horizontal rule gradient — center-bright neon fade -->
+    <linearGradient id="ruleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF1744" stop-opacity="0"/>
+      <stop offset="25%" stop-color="#FF1744" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#FF1744" stop-opacity="0.9"/>
+      <stop offset="75%" stop-color="#FF1744" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Arch base neon glow -->
+    <radialGradient id="archBaseGlow" cx="50%" cy="100%" r="60%">
+      <stop offset="0%" stop-color="#FF1744" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Arch glow aura — soft neon bleed behind the arch -->
+  <rect x="118" y="40" width="164" height="175" rx="4" fill="url(#archBaseGlow)" opacity="0.5"/>
+
+  <!-- Main arch — bold, 2.5 stroke, high visibility -->
+  <path d="M130 210 L130 108 Q130 48 200 48 Q270 48 270 108 L270 210"
+    stroke="url(#archGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Inner arch highlight — chrome reflection line -->
+  <path d="M138 206 L138 111 Q138 58 200 58 Q262 58 262 111 L262 206"
+    stroke="url(#archHighlight)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+
+  <!-- Arch base terminals — serif feet -->
+  <line x1="122" y1="210" x2="138" y2="210" stroke="#C0C0C0" stroke-width="1.2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <line x1="262" y1="210" x2="278" y2="210" stroke="#C0C0C0" stroke-width="1.2" stroke-opacity="0.5" stroke-linecap="round"/>
+
+  <!-- Crown finial — visible dot at arch apex -->
+  <circle cx="200" cy="48" r="3" fill="#FF1744" opacity="0.7"/>
+  <circle cx="200" cy="48" r="6" fill="#FF1744" opacity="0.15"/>
+
+  <!-- V mark — bold converging strokes -->
+  <line x1="162" y1="80" x2="200" y2="175" stroke="url(#vLeftGrad)" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="238" y1="80" x2="200" y2="175" stroke="url(#vRightGrad)" stroke-width="3.2" stroke-linecap="round"/>
+
+  <!-- Vermillion dot at convergence — layered glow -->
+  <circle cx="200" cy="175" r="16" fill="url(#dotGlowOuter)" opacity="0.5"/>
+  <circle cx="200" cy="175" r="8" fill="url(#dotGlowInner)" opacity="0.7"/>
+  <circle cx="200" cy="175" r="3.5" fill="#FF1744"/>
+  <circle cx="200" cy="175" r="1.5" fill="#fff" opacity="0.35"/>
+
+  <!-- VERMILLION text — metallic gradient -->
+  <text x="200" y="238" text-anchor="middle" fill="url(#textGrad)" font-family="Cinzel, serif" font-size="28" letter-spacing="0.2em" font-weight="500">VERMILLION</text>
+
+  <!-- AXIS text — neon red -->
+  <text x="200" y="264" text-anchor="middle" fill="#FF1744" font-family="Cinzel, serif" font-size="16" letter-spacing="0.25em" font-weight="700">AXIS</text>
+
+  <!-- Horizontal rule with glow -->
+  <line x1="135" y1="278" x2="265" y2="278" stroke="url(#ruleGrad)" stroke-width="1"/>
+
+  <!-- TECHNOLOGIES text -->
+  <text x="200" y="300" text-anchor="middle" fill="#9A9A9A" font-family="Cinzel, serif" font-size="11" letter-spacing="0.35em" font-weight="400">TECHNOLOGIES</text>
+</svg>

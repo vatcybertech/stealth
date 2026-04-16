@@ -1,0 +1,547 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens as CSS custom properties ── */
+:root {
+  --neon: 255, 23, 68;
+  --surface: 12, 12, 12;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: #050505;
+  color: #C0C0C0;
+  line-height: 1.75;
+  font-family: 'Source Sans 3', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.05;
+  contain: strict;
+  isolation: isolate;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  animation: grain 4s steps(4) infinite;
+}
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,23,68,0.35) #050505;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255,23,68,0.3);
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(255,23,68,0.2) inset;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,23,68,0.55);
+  box-shadow: 0 0 12px rgba(255,23,68,0.35) inset;
+}
+
+/* Selection */
+::selection {
+  background: rgba(255, 23, 68, 0.25);
+  color: #E8E8F0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus-visible for keyboard accessibility */
+*:focus-visible {
+  outline: 2px solid #FF1744;
+  outline-offset: 2px;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* GPU-accelerate sections for smooth scroll */
+section {
+  contain: layout style;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   CONTINUOUS PAGE BACKGROUND — Dual-tone depth
+   Neon crimson focal points over deep black
+   ═══════════════════════════════════════════════════ */
+.page-bg {
+  background:
+    /* Top neon accent — hero pull */
+    radial-gradient(ellipse 80% 35% at 50% 0%, rgba(255,23,68,0.08), transparent 60%),
+    /* Cathedral light shafts — staggered red glow at content anchors */
+    radial-gradient(ellipse 50% 15% at 50% 30%, rgba(255,23,68,0.04), transparent 50%),
+    radial-gradient(ellipse 40% 10% at 30% 50%, rgba(255,23,68,0.025), transparent 45%),
+    radial-gradient(ellipse 60% 20% at 50% 70%, rgba(255,23,68,0.045), transparent 55%),
+    radial-gradient(ellipse 40% 10% at 70% 85%, rgba(255,23,68,0.03), transparent 45%),
+    radial-gradient(ellipse 70% 25% at 50% 95%, rgba(255,23,68,0.06), transparent 50%),
+    #050505;
+}
+
+/* ═══════════════════════════════════════════════════
+   CIRCUIT PATTERN OVERLAY — Atmospheric tech grid
+   ═══════════════════════════════════════════════════ */
+.circuit-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.045;
+  contain: paint;
+  background-image:
+    linear-gradient(rgba(255,23,68,0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,23,68,0.4) 1px, transparent 1px),
+    radial-gradient(circle 2px at center, rgba(255,23,68,0.6) 0%, transparent 100%);
+  background-size: 80px 80px, 80px 80px, 80px 80px;
+}
+
+/* Focus-visible glow enhancement */
+*:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255,23,68,0.15), 0 0 15px rgba(255,23,68,0.1);
+}
+
+/* ═══════════════════════════════════════════════════
+   ANIMATION KEYFRAMES
+   ═══════════════════════════════════════════════════ */
+@keyframes grain {
+  0% { background-position: 0 0; }
+  25% { background-position: -128px 64px; }
+  50% { background-position: 64px -96px; }
+  75% { background-position: -64px 128px; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-2px); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { opacity: 0.6; filter: brightness(1); }
+  50% { opacity: 1; filter: brightness(1.2); }
+}
+
+/* SVG chart line draw animation */
+@keyframes line-draw {
+  from { stroke-dashoffset: var(--line-length, 300); }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-line-draw {
+  stroke-dasharray: var(--line-length, 300);
+  stroke-dashoffset: var(--line-length, 300);
+  animation: line-draw 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.3s;
+}
+
+/* SVG donut arc reveal */
+@keyframes donut-fill {
+  from { stroke-dashoffset: 113; }
+  to { stroke-dashoffset: var(--donut-offset, 0); }
+}
+
+.animate-donut {
+  animation: donut-fill 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.6s;
+}
+
+/* KPI count-up fade */
+@keyframes kpi-reveal {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-kpi {
+  opacity: 0;
+  animation: kpi-reveal 0.5s ease-out forwards;
+}
+
+@keyframes neon-flicker {
+  0% { opacity: 0.4; }
+  20% { opacity: 1; }
+  40% { opacity: 0.7; }
+  60% { opacity: 1; }
+  80% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+@keyframes pulse-ambient {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes border-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════
+   GOTHIC CARD — Signature card style
+   Dark gradient + neon-tinted borders + hover glow
+   ═══════════════════════════════════════════════════ */
+.gothic-card {
+  background: linear-gradient(135deg, rgba(12,12,12,0.97), rgba(6,6,6,0.99));
+  border: 1px solid rgba(255,23,68,0.12);
+  box-shadow: 0 0 15px rgba(255,23,68,0.1), 0 0 35px rgba(255,23,68,0.06), 0 0 60px rgba(255,23,68,0.03), 0 0 1px rgba(255,23,68,0.15);
+  border-radius: 12px;
+  transition: border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gothic-card:hover {
+  border-color: rgba(255,23,68,0.35);
+  box-shadow: 0 0 25px rgba(255,23,68,0.25), 0 0 50px rgba(255,23,68,0.15), 0 0 90px rgba(255,23,68,0.08), 0 0 140px rgba(255,23,68,0.04), 0 0 1px rgba(255,23,68,0.35);
+  /* No CSS transform here — Framer Motion owns hover transforms */
+}
+
+/* ═══════════════════════════════════════════════════
+   NEON TEXT GLOW — For key headings & stat numbers
+   ═══════════════════════════════════════════════════ */
+.text-neon-glow {
+  text-shadow: 0 0 20px rgba(255,23,68,0.35), 0 0 50px rgba(255,23,68,0.15), 0 0 80px rgba(255,23,68,0.05);
+}
+
+.text-neon-glow-subtle {
+  text-shadow: 0 0 15px rgba(255,23,68,0.25), 0 0 30px rgba(255,23,68,0.08);
+}
+
+/* ═══════════════════════════════════════════════════
+   NEON BORDER FLOW — Animated traveling-light border
+   Uses a rotating conic gradient masked to border only
+   ═══════════════════════════════════════════════════ */
+.neon-border-flow {
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+  contain: paint;
+  filter: drop-shadow(0 0 6px rgba(255,23,68,0.15)) drop-shadow(0 0 15px rgba(255,23,68,0.06));
+}
+.neon-border-flow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  will-change: transform;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    transparent 15%,
+    rgba(255,23,68,0.25) 25%,
+    rgba(255,23,68,0.5) 32%,
+    rgba(255,23,68,0.7) 42%,
+    rgba(255,23,68,0.7) 50%,
+    rgba(255,23,68,0.7) 58%,
+    rgba(255,23,68,0.5) 68%,
+    rgba(255,23,68,0.25) 75%,
+    transparent 85%,
+    transparent 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  animation: border-rotate 12s linear infinite;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   PREMIUM TEXT GRADIENT — Neon vermillion
+   ═══════════════════════════════════════════════════ */
+.text-gradient-vermillion {
+  background: linear-gradient(135deg, #FF1744, #FF3D5A, #D44040, #FF1744);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* ═══════════════════════════════════════════════════
+   PREMIUM BUTTON EFFECTS
+   ═══════════════════════════════════════════════════ */
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,0.08) 45%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0.08) 55%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════
+   HOLOGRAPHIC SHIMMER — Premium surface effect
+   ═══════════════════════════════════════════════════ */
+.holographic-shimmer {
+  background: linear-gradient(
+    135deg,
+    rgba(255,23,68,0.15) 0%,
+    rgba(255,255,255,0.04) 25%,
+    rgba(255,23,68,0.08) 50%,
+    rgba(255,255,255,0.04) 75%,
+    rgba(255,23,68,0.12) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* ═══════════════════════════════════════════════════
+   NEON DIVIDER — Glowing section separator
+   ═══════════════════════════════════════════════════ */
+.neon-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, rgba(255,23,68,0.35) 30%, rgba(255,23,68,0.2) 50%, rgba(255,23,68,0.35) 70%, transparent 95%);
+  box-shadow: 0 0 15px rgba(255,23,68,0.2), 0 0 35px rgba(255,23,68,0.08), 0 0 60px rgba(255,23,68,0.03);
+}
+
+/* ═══════════════════════════════════════════════════
+   VIGNETTE — Deep edge darkening for cathedral depth
+   ═══════════════════════════════════════════════════ */
+.page-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse 75% 65% at 50% 50%, transparent 55%, rgba(0,0,0,0.35) 100%);
+  contain: paint;
+}
+
+/* ═══════════════════════════════════════════════════
+   METALLIC TEXT — Silver/chrome gradient text effect
+   ═══════════════════════════════════════════════════ */
+.metallic-text {
+  background: linear-gradient(180deg, #E8E8E8 0%, #C0C0C0 30%, #888888 50%, #C0C0C0 70%, #E8E8E8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* text-shadow invisible with transparent text-fill — removed */
+}
+
+/* ═══════════════════════════════════════════════════
+   GOTHIC FRAME — Decorative border with corner accents
+   ═══════════════════════════════════════════════════ */
+.gothic-frame {
+  position: relative;
+  border: 1px solid rgba(255,23,68,0.08);
+  box-shadow: 0 0 15px rgba(255,23,68,0.05), 0 0 1px rgba(192,192,192,0.1);
+}
+.gothic-frame::before,
+.gothic-frame::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(255,23,68,0.3);
+  border-style: solid;
+  box-shadow: 0 0 8px rgba(255,23,68,0.15);
+  filter: drop-shadow(0 0 4px rgba(255,23,68,0.3));
+}
+.gothic-frame::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.gothic-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   ORNAMENT DIVIDER — Decorative section separator
+   ═══════════════════════════════════════════════════ */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0.4;
+}
+.ornament-divider::before,
+.ornament-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192,192,192,0.3), transparent);
+}
+
+/* ═══════════════════════════════════════════════════
+   CATHEDRAL BEAM — Vertical ambient light effect
+   ═══════════════════════════════════════════════════ */
+@keyframes cathedral-light {
+  0%, 100% { opacity: 0.03; transform: translateY(0); }
+  50% { opacity: 0.08; transform: translateY(-20px); }
+}
+
+.cathedral-beam {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255,23,68,0.3), rgba(255,23,68,0.05), transparent);
+  animation: cathedral-light 6s ease-in-out infinite;
+  contain: paint;
+  will-change: transform, opacity;
+}
+
+/* ═══════════════════════════════════════════════════
+   IRON FILIGREE — Ornamental border treatment
+   ═══════════════════════════════════════════════════ */
+.iron-filigree {
+  border: 1px solid rgba(192,192,192,0.1);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.3), 0 0 1px rgba(192,192,192,0.12), 0 0 15px rgba(255,23,68,0.08), 0 0 30px rgba(255,23,68,0.03);
+  transition: all 0.4s ease;
+}
+.iron-filigree:hover {
+  border-color: rgba(255,23,68,0.2);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.3), 0 0 1px rgba(192,192,192,0.2), 0 0 25px rgba(255,23,68,0.15), 0 0 50px rgba(255,23,68,0.06), 0 0 80px rgba(255,23,68,0.03);
+}
+
+/* ═══════════════════════════════════════════════════
+   NEON GLOW BORDER — Reusable neon edge glow
+   ═══════════════════════════════════════════════════ */
+.neon-glow-border {
+  border: 1px solid rgba(255,23,68,0.12);
+  box-shadow: 0 0 15px rgba(255,23,68,0.06), 0 0 30px rgba(255,23,68,0.03), inset 0 0 15px rgba(255,23,68,0.02);
+  transition: all 0.4s ease;
+}
+.neon-glow-border:hover {
+  border-color: rgba(255,23,68,0.3);
+  box-shadow: 0 0 20px rgba(255,23,68,0.12), 0 0 40px rgba(255,23,68,0.06), 0 0 80px rgba(255,23,68,0.03), inset 0 0 20px rgba(255,23,68,0.03);
+}
+
+@keyframes neon-pulse-border {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(255,23,68,0.15), 0 0 50px rgba(255,23,68,0.08), 0 0 90px rgba(255,23,68,0.04);
+    border-color: rgba(255,23,68,0.25);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255,23,68,0.25), 0 0 70px rgba(255,23,68,0.12), 0 0 120px rgba(255,23,68,0.06);
+    border-color: rgba(255,23,68,0.4);
+  }
+}
+.neon-pulse-border {
+  animation: neon-pulse-border 2.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════
+   PAGE ENTRANCE — Smooth load animation
+   ═══════════════════════════════════════════════════ */
+@keyframes page-enter {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  animation: page-enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════════════
+   MARQUEE ANIMATIONS — Compositor-thread CSS
+   ═══════════════════════════════════════════════════ */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE PERFORMANCE — Reduce GPU load on phones
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .noise-overlay {
+    animation: none;
+  }
+  .neon-border-flow::before {
+    animation-duration: 24s;
+  }
+  .circuit-overlay {
+    display: none;
+  }
+  .page-vignette {
+    display: none;
+  }
+}
+
+.text-gradient-silver {
+  background: linear-gradient(135deg, #E8E8E8, #888888, #C0C0C0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

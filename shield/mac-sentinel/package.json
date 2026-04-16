@@ -1,0 +1,20 @@
+{
+  "name": "shield-mac-sentinel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SHIELD Mac Sentinel - host-based intrusion detection daemon for macOS. Zero external dependencies - Node.js built-ins only.",
+  "main": "sentinel.js",
+  "bin": {
+    "shield-sentinel": "sentinel.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node sentinel.js",
+    "self-test": "node sentinel.js --self-test",
+    "pair": "node sentinel.js --pair",
+    "install-agent": "bash install.sh"
+  },
+  "license": "UNLICENSED"
+}

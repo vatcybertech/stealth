@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0A0A0C">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SHIELD">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="referrer" content="no-referrer">
+
+  <!--
+    Content Security Policy.
+    Zero network egress. Everything is 'self'. No external fonts, scripts,
+    images, or styles. 'unsafe-inline' for styles is required because we
+    toggle a few dynamic class-based style effects. connect-src allows
+    loopback + local-network Mac Sentinel. Nothing else.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data: blob:;
+    font-src 'self';
+    connect-src 'self' https://127.0.0.1:* https://localhost:* https://192.168.0.0/16 https://10.0.0.0/8 https://172.16.0.0/12;
+    media-src 'self' data: blob:;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'none';
+    frame-ancestors 'none';
+  ">
+
+  <title>SHIELD</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Lock screen — shown until PIN unlocked -->
+  <div id="lock-screen" class="lock-screen">
+    <svg class="lock-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="lg" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#C23B22"/>
+          <stop offset="100%" stop-color="#7A1F10"/>
+        </linearGradient>
+      </defs>
+      <path d="M256 64 L408 112 L408 256 Q408 376 256 448 Q104 376 104 256 L104 112 Z" fill="url(#lg)" stroke="#F0ECE6" stroke-width="10"/>
+      <path d="M200 264 L240 304 L320 224" fill="none" stroke="#F0ECE6" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1>SHIELD</h1>
+    <p id="lock-prompt">Enter your PIN</p>
+    <input id="pin-input" class="pin-input" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="16" aria-label="PIN">
+    <div id="lock-error" class="lock-error"></div>
+    <div id="lock-actions" style="margin-top:12px;display:flex;gap:8px;"></div>
+  </div>
+
+  <!-- Main app — hidden until unlocked -->
+  <div id="app" class="hidden" role="main">
+
+    <div class="top-bar">
+      <div class="logo">
+        <svg viewBox="0 0 512 512" aria-hidden="true">
+          <path d="M256 64 L408 112 L408 256 Q408 376 256 448 Q104 376 104 256 L104 112 Z" fill="#C23B22" stroke="#F0ECE6" stroke-width="16"/>
+          <path d="M200 264 L240 304 L320 224" fill="none" stroke="#F0ECE6" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>SHIELD</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="threat-dot" id="threat-dot" title="Current threat level"></div>
+      <button class="icon-btn" id="btn-lock" title="Lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+      </button>
+    </div>
+
+    <!-- Auto-response acknowledge banner (shown only when pending) -->
+    <div id="auto-response-banner" class="ar-banner hidden"></div>
+
+    <!-- Dashboard view -->
+    <section id="view-dashboard" class="view">
+      <div class="status-card" id="status-card">
+        <div class="label">Environment</div>
+        <div class="headline safe" id="status-headline">Initializing…</div>
+        <div class="meta">
+          <span>Last scan <strong id="status-scan-time">—</strong></span>
+          <span>Network <strong id="status-ssid">—</strong></span>
+          <span>Devices <strong id="status-devices">—</strong></span>
+        </div>
+        <div class="sync-row" id="sync-row">
+          <span class="sync-dot" id="sync-dot"></span>
+          <span class="sync-label" id="sync-label">Sentinel link: unknown</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Posture</h2></div>
+        <div id="posture-grid" class="posture-grid"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Alerts</h2><button class="btn btn-ghost" id="btn-mark-all">Mark Reviewed</button></div>
+        <div id="alert-feed"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>LAN Devices</h2></div>
+        <div id="lan-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Bluetooth</h2></div>
+        <div id="bt-list"></div>
+      </div>
+    </section>
+
+    <!-- Journal view -->
+    <section id="view-journal" class="view hidden">
+      <h2>Journal</h2>
+      <p>Every journal entry is AES-256-GCM encrypted, hash-chained to the previous entry, and can be exported as a signed evidence report. Write what you see, in your words, with timestamps.</p>
+      <div class="card">
+        <div class="card-header"><h2>New entry</h2></div>
+        <label for="je-severity">Severity</label>
+        <select id="je-severity">
+          <option value="INFO">INFO — routine observation</option>
+          <option value="LOW">LOW — possible anomaly</option>
+          <option value="MEDIUM" selected>MEDIUM — concerning</option>
+          <option value="HIGH">HIGH — confirmed suspicious</option>
+          <option value="CRITICAL">CRITICAL — active compromise</option>
+        </select>
+        <label for="je-text" style="margin-top:12px;">What did you see?</label>
+        <textarea id="je-text" placeholder="Be specific. Who, what, when, where, which device."></textarea>
+        <label for="je-photo" style="margin-top:12px;">Attach a photo (optional)</label>
+        <input id="je-photo" type="file" accept="image/*" capture="environment">
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-primary" id="btn-journal-save">Save entry</button>
+          <button class="btn btn-ghost" id="btn-journal-clear">Clear</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>Entries</h2></div>
+        <div id="journal-list"></div>
+      </div>
+    </section>
+
+    <!-- Hardening view -->
+    <section id="view-harden" class="view hidden">
+      <h2>Hardening</h2>
+      <p>Work top to bottom. Each checked item is recorded with a timestamp in your tamper-evident journal.</p>
+      <div id="checklist-root"></div>
+    </section>
+
+    <!-- Evidence / Export view -->
+    <section id="view-evidence" class="view hidden">
+      <h2>Evidence</h2>
+      <p>Export a full, signed, hash-chained snapshot of your journal and (if paired) the Mac Sentinel ledger.</p>
+      <div class="card">
+        <div class="card-header"><h2>Integrity check</h2></div>
+        <div id="integrity-status"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>Export options</h2></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" id="btn-export-json">Signed JSON</button>
+          <button class="btn" id="btn-export-html">Printable HTML</button>
+          <button class="btn btn-ghost" id="btn-export-share">Copy to clipboard</button>
+        </div>
+        <small>Files are generated locally and never uploaded. Save them to a secure location outside iCloud if iCloud may be compromised.</small>
+      </div>
+    </section>
+
+    <!-- Settings view -->
+    <section id="view-settings" class="view hidden">
+      <h2>Settings</h2>
+
+      <div class="card">
+        <div class="card-header"><h2>Mac Sentinel</h2></div>
+        <div id="sentinel-status"></div>
+        <label for="sentinel-url" style="margin-top:12px;">Sentinel URL</label>
+        <input id="sentinel-url" type="text" placeholder="https://127.0.0.1:17333">
+        <label for="sentinel-fp" style="margin-top:12px;">Pinned cert SHA-256</label>
+        <input id="sentinel-fp" type="text" placeholder="64-char hex fingerprint from sentinel startup">
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-primary" id="btn-sentinel-pair">Pair</button>
+          <button class="btn btn-ghost" id="btn-sentinel-unpair">Unpair</button>
+        </div>
+        <small>See <code>~/Library/Application Support/SHIELD/sentinel.log</code> for the fingerprint.</small>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Kill switch</h2></div>
+        <p>The red button runs the SHIELD Kill Switch iOS Shortcut. Tap below to dry-run and make sure the Shortcut is installed.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-danger" id="btn-killswitch-test">Run Kill Switch</button>
+          <button class="btn" id="btn-shortcut-night">Night Mode</button>
+          <button class="btn" id="btn-shortcut-morning">Morning Check</button>
+        </div>
+        <small>See <code>docs/SHORTCUTS.md</code> for setup.</small>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Auto-lock</h2></div>
+        <label for="autolock">Lock after (seconds of inactivity)</label>
+        <input id="autolock" type="number" min="15" max="900" value="60">
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-primary" id="btn-save-settings">Save</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>What can SHIELD actually see?</h2></div>
+        <p>Brutal honesty about what this app observes on iPhone vs Mac.</p>
+        <table class="cap-table">
+          <thead><tr><th>Capability</th><th>iPhone</th><th>Mac</th></tr></thead>
+          <tbody>
+            <tr><td>LAN device scan</td><td class="cap-none">NO</td><td class="cap-real">YES</td></tr>
+            <tr><td>Bluetooth enumeration</td><td class="cap-none">NO</td><td class="cap-real">YES</td></tr>
+            <tr><td>Configuration Profiles</td><td class="cap-part">manual</td><td class="cap-real">YES</td></tr>
+            <tr><td>LaunchAgents</td><td class="cap-none">N/A</td><td class="cap-real">YES</td></tr>
+            <tr><td>Lockdown Mode check</td><td class="cap-part">manual</td><td class="cap-real">YES</td></tr>
+            <tr><td>FileVault / SIP / Gatekeeper</td><td class="cap-none">N/A</td><td class="cap-real">YES</td></tr>
+            <tr><td>Process codesign verify</td><td class="cap-none">N/A</td><td class="cap-real">YES</td></tr>
+            <tr><td>Encrypted journal</td><td class="cap-real">YES</td><td class="cap-real">YES</td></tr>
+            <tr><td>Hash-chained tamper check</td><td class="cap-real">YES</td><td class="cap-real">YES</td></tr>
+            <tr><td>Kill switch (radios)</td><td class="cap-part">via Shortcut</td><td class="cap-part">Wi-Fi only</td></tr>
+            <tr><td>Push notifications</td><td class="cap-part">iOS 16.4+</td><td class="cap-real">YES</td></tr>
+            <tr><td>Detect screen mirroring</td><td class="cap-none">NO</td><td class="cap-none">NO</td></tr>
+            <tr><td>Detect remote setting toggles</td><td class="cap-none">NO</td><td class="cap-part">indirect</td></tr>
+          </tbody>
+        </table>
+        <small>Full details in <code>docs/CAPABILITIES.md</code>.</small>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>About</h2></div>
+        <div class="about-row">
+          <svg class="about-mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ag" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#C23B22"/><stop offset="100%" stop-color="#7A1F10"/></linearGradient></defs><path d="M32 6 L54 16 L54 34 Q54 50 32 58 Q10 50 10 34 L10 16 Z" fill="url(#ag)" stroke="#F0ECE6" stroke-width="2"/><path d="M32 6 L32 58" stroke="#F0ECE6" stroke-width="1.5" opacity="0.4"/></svg>
+          <div>
+            <div class="about-title">SHIELD</div>
+            <div class="about-ver">Version 2.0 · Host-based intrusion detection</div>
+            <div class="about-desc">Zero external dependencies. Zero network egress. All persistent state is AES-256-GCM encrypted under a PIN-derived key. Hash-chained, tamper-evident ledger across iPhone and MacBook. Designed and built for private personal use only.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Danger zone</h2></div>
+        <p>Wipe all SHIELD data on this device. Cannot be undone.</p>
+        <button class="btn btn-danger" id="btn-wipe">Wipe SHIELD data</button>
+      </div>
+    </section>
+
+    <!-- Kill switch FAB -->
+    <button class="kill-fab" id="kill-fab" title="Kill Switch">KILL</button>
+
+    <!-- Bottom nav -->
+    <nav class="tab-bar" role="tablist">
+      <button class="tab active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        Home
+      </button>
+      <button class="tab" data-view="journal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        Journal
+      </button>
+      <button class="tab" data-view="harden">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/></svg>
+        Harden
+      </button>
+      <button class="tab" data-view="evidence">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12l4 4v12H4z"/><path d="M14 4v6h6"/></svg>
+        Evidence
+      </button>
+      <button class="tab" data-view="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1A2 2 0 1 1 4.4 17l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1A2 2 0 1 1 19.7 7l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        Settings
+      </button>
+    </nav>
+  </div>
+
+  <script src="crypto.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ledger.js"></script>
+  <script src="js/sentinel-client.js"></script>
+  <script src="js/checklist.js"></script>
+  <script src="js/shortcuts.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

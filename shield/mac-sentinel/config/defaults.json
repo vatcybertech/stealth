@@ -1,0 +1,65 @@
+{
+  "scanIntervalMs": 30000,
+  "aggressiveIntervalMs": 5000,
+  "idleIntervalMs": 120000,
+  "server": {
+    "host": "127.0.0.1",
+    "port": 17333,
+    "allowedOrigins": [
+      "https://dkfitcoaching-lab.github.io",
+      "http://localhost:4173",
+      "http://localhost:8000",
+      "null"
+    ]
+  },
+  "autoResponse": {
+    "enabled": true,
+    "onlyWhenScreenLocked": true,
+    "killWifi": true,
+    "audibleAlarm": true,
+    "alertDialog": true,
+    "gracePeriodSeconds": 259200
+  },
+  "bannerServer": {
+    "enabled": false,
+    "port": 80,
+    "bindAddress": "0.0.0.0"
+  },
+  "logStream": {
+    "enabled": true,
+    "restartBackoffMs": 5000
+  },
+  "enforcement": {
+    "enabled": true,
+    "mode": "auto",
+    "gracePeriodSeconds": 259200
+  },
+  "selfHeal": {
+    "enabled": true,
+    "intervalMs": 300000,
+    "baseline": {
+      "lockdownMode": true,
+      "fileVault": true,
+      "sip": true,
+      "gatekeeper": true,
+      "firewall": true,
+      "firewallStealth": true,
+      "sharingServicesOff": true
+    }
+  },
+  "blocklist": {
+    "enabled": true,
+    "tableName": "shield_block"
+  },
+  "paths": {
+    "stateDir": "~/Library/Application Support/SHIELD",
+    "certDir": "~/Library/Application Support/SHIELD/certs",
+    "ledgerFile": "~/Library/Application Support/SHIELD/ledger.jsonl.enc",
+    "stateFile": "~/Library/Application Support/SHIELD/state.json.enc",
+    "verifierFile": "~/Library/Application Support/SHIELD/verifier.json",
+    "autoResponseFile": "~/Library/Application Support/SHIELD/autoresponse.json",
+    "blocklistFile": "~/Library/Application Support/SHIELD/blocklist.json",
+    "startupBeaconFile": "~/Library/Application Support/SHIELD/boot.json"
+  },
+  "rules": []
+}

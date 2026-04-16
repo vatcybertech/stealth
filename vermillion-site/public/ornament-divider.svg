@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60">
+  <defs>
+    <linearGradient id="ironSheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#999"/>
+      <stop offset="100%" stop-color="#555"/>
+    </linearGradient>
+    <linearGradient id="ironSheenH" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#666"/>
+      <stop offset="40%" stop-color="#AAA"/>
+      <stop offset="60%" stop-color="#AAA"/>
+      <stop offset="100%" stop-color="#666"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="none" stroke="url(#ironSheen)" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- Central diamond motif -->
+    <g transform="translate(400,30)">
+      <rect x="-10" y="-10" width="20" height="20" transform="rotate(45)" stroke-width="2.5" fill="#444"/>
+      <rect x="-6" y="-6" width="12" height="12" transform="rotate(45)" stroke-width="1.5" fill="url(#ironSheen)"/>
+      <circle cx="0" cy="0" r="2.5" fill="#C0C0C0" stroke="none"/>
+      <!-- Small cross inside diamond -->
+      <line x1="0" y1="-5" x2="0" y2="5" stroke-width="1" stroke="#888"/>
+      <line x1="-5" y1="0" x2="5" y2="0" stroke-width="1" stroke="#888"/>
+    </g>
+
+    <!-- Central horizontal bar -->
+    <line x1="385" y1="30" x2="415" y2="30" stroke-width="2" stroke="url(#ironSheenH)"/>
+
+    <!-- ===== RIGHT SIDE ===== -->
+    <g>
+      <!-- Main sweeping scroll from center -->
+      <path d="M 415,30 C 435,30 445,18 460,18 C 475,18 478,30 490,30" stroke-width="2.2"/>
+      <!-- Upper curl -->
+      <path d="M 460,18 C 458,10 465,6 472,10" stroke-width="1.8"/>
+      <circle cx="473" cy="9" r="2" fill="#888" stroke="none"/>
+      <!-- Lower counter-curl -->
+      <path d="M 478,30 C 480,38 488,42 496,38" stroke-width="1.8"/>
+      <circle cx="497" cy="37" r="2" fill="#888" stroke="none"/>
+
+      <!-- Second wave -->
+      <path d="M 490,30 C 510,30 515,42 535,42 C 555,42 555,30 570,30" stroke-width="2"/>
+      <!-- Lower finial off second wave -->
+      <path d="M 535,42 C 533,50 540,54 547,50" stroke-width="1.5"/>
+      <circle cx="548" cy="49" r="1.8" fill="#888" stroke="none"/>
+
+      <!-- Third extending curve -->
+      <path d="M 570,30 C 585,30 590,22 610,22 C 625,22 628,30 640,30" stroke-width="1.8"/>
+      <path d="M 610,22 C 608,15 614,12 620,15" stroke-width="1.4"/>
+      <circle cx="621" cy="14" r="1.5" fill="#666" stroke="none"/>
+
+      <!-- Tapering tail -->
+      <path d="M 640,30 C 660,30 670,26 695,28" stroke-width="1.4"/>
+      <path d="M 695,28 C 710,29 720,30 740,30" stroke-width="1"/>
+
+      <!-- End finial -->
+      <circle cx="742" cy="30" r="2.5" fill="#888" stroke="#666" stroke-width="1"/>
+      <circle cx="750" cy="30" r="1.5" fill="#666" stroke="none"/>
+
+      <!-- Decorative dots along the right arm -->
+      <circle cx="520" cy="30" r="1.5" fill="#C0C0C0" stroke="none"/>
+      <circle cx="600" cy="30" r="1.2" fill="#888" stroke="none"/>
+      <circle cx="670" cy="30" r="1" fill="#666" stroke="none"/>
+    </g>
+
+    <!-- ===== LEFT SIDE (mirror) ===== -->
+    <g transform="translate(800,0) scale(-1,1)">
+      <!-- Main sweeping scroll from center -->
+      <path d="M 415,30 C 435,30 445,18 460,18 C 475,18 478,30 490,30" stroke-width="2.2"/>
+      <!-- Upper curl -->
+      <path d="M 460,18 C 458,10 465,6 472,10" stroke-width="1.8"/>
+      <circle cx="473" cy="9" r="2" fill="#888" stroke="none"/>
+      <!-- Lower counter-curl -->
+      <path d="M 478,30 C 480,38 488,42 496,38" stroke-width="1.8"/>
+      <circle cx="497" cy="37" r="2" fill="#888" stroke="none"/>
+
+      <!-- Second wave -->
+      <path d="M 490,30 C 510,30 515,42 535,42 C 555,42 555,30 570,30" stroke-width="2"/>
+      <!-- Lower finial off second wave -->
+      <path d="M 535,42 C 533,50 540,54 547,50" stroke-width="1.5"/>
+      <circle cx="548" cy="49" r="1.8" fill="#888" stroke="none"/>
+
+      <!-- Third extending curve -->
+      <path d="M 570,30 C 585,30 590,22 610,22 C 625,22 628,30 640,30" stroke-width="1.8"/>
+      <path d="M 610,22 C 608,15 614,12 620,15" stroke-width="1.4"/>
+      <circle cx="621" cy="14" r="1.5" fill="#666" stroke="none"/>
+
+      <!-- Tapering tail -->
+      <path d="M 640,30 C 660,30 670,26 695,28" stroke-width="1.4"/>
+      <path d="M 695,28 C 710,29 720,30 740,30" stroke-width="1"/>
+
+      <!-- End finial -->
+      <circle cx="742" cy="30" r="2.5" fill="#888" stroke="#666" stroke-width="1"/>
+      <circle cx="750" cy="30" r="1.5" fill="#666" stroke="none"/>
+
+      <!-- Decorative dots along the arm -->
+      <circle cx="520" cy="30" r="1.5" fill="#C0C0C0" stroke="none"/>
+      <circle cx="600" cy="30" r="1.2" fill="#888" stroke="none"/>
+      <circle cx="670" cy="30" r="1" fill="#666" stroke="none"/>
+    </g>
+
+    <!-- Small accent bars flanking center diamond -->
+    <line x1="370" y1="25" x2="380" y2="28" stroke-width="1.5" stroke="#888"/>
+    <line x1="370" y1="35" x2="380" y2="32" stroke-width="1.5" stroke="#888"/>
+    <line x1="420" y1="28" x2="430" y2="25" stroke-width="1.5" stroke="#888"/>
+    <line x1="420" y1="32" x2="430" y2="35" stroke-width="1.5" stroke="#888"/>
+
+  </g>
+</svg>
