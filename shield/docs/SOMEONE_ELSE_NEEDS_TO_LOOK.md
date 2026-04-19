@@ -29,19 +29,16 @@ Free. 24/7. Multilingual. They specialize in targeted individuals, civil-society
 
 ### What to send them when you reach out
 
-Use this script (paste into their intake form, edit for your situation):
+Intake fields the operator should be prepared to provide (do not commit personal details to this repo — fill in at submission time):
 
-> I am a U.S. resident in [state]. I am being targeted by what I believe is sustained intrusion into my Apple ID, MacBook, and iPhone. The pattern is persistent: I have factory-reset the iPhone, switched to a new Apple ID, and replaced the device. The only thing I held constant was my phone number, and the attacker re-established access immediately afterward.
->
-> Observations include: greyed-out settings I cannot change, deleted system alerts, screen overlays, accessibility features (Voice Control, Braille, Bluetooth) being used as control surfaces, and notification suppression.
->
-> I have read your guidance and would like:
-> 1. Triage of my situation.
-> 2. Forensic analysis of an iTunes backup of my iPhone (I can produce one on request).
-> 3. Guidance on whether commercial spyware is in scope.
-> 4. Referral to a U.S.-qualified forensics professional if appropriate.
->
-> I have an FBI IC3 report number [pending / number]. I have local law enforcement engagement [yes / no]. I am willing to ship a sysdiagnose, iTunes backup, or other artifacts.
+- Country and state of residence.
+- Devices involved (model, OS version).
+- Symptom summary in 3–5 sentences. Stick to factual, observable behaviors.
+- Rebuild history: device replacements, OS reinstalls, account rotations, what was held constant.
+- Any persistence pattern observed (e.g., reappearance of settings/profiles after removal).
+- IC3 report number if filed; local law enforcement engagement status.
+- Artifacts available to ship (sysdiagnose, encrypted iTunes backup, Time Machine image).
+- Preferred contact channel (Signal username, ProtonMail, etc.).
 
 ### Before you write to them
 
@@ -181,14 +178,12 @@ Many attorneys take cyberstalking cases on contingency or sliding scale, especia
 
 ---
 
-## A reasonable timeline
+## Reference timeline
 
-- **Day 0:** Read this. Decide you're calling Access Now today. Capture iPhone sysdiagnose + encrypted iTunes backup before you change anything.
-- **Day 0–3:** Access Now triage call. They tell you whether commercial spyware analysis (MVT) makes sense.
-- **Day 1:** File IC3 report. File state AG report.
-- **Day 3–7:** Reach out to local victim services. Reach out to a forensics firm for an estimate.
-- **Day 7–14:** Forensics engagement begins. Meanwhile, you execute `IPHONE_LOCKDOWN_MAX.md` and `MAC_LOCKDOWN_MAX.md` on the **rebuilt** devices (preserve the originals as evidence).
-- **Day 14–30:** Forensics report delivered. Decide on attorney engagement.
-- **Day 30+:** Decoupling per `PHONE_NUMBER_DECOUPLING.md` Path A. New normal.
-
-You will not feel safe at day 30. You may feel safe at day 90, when the rebuild has held and the documentation is complete and you have a lawyer who knows the file. The job between now and then is to make every step a real human can verify, not one you have to hold in your own head.
+- **Day 0:** Capture iPhone sysdiagnose + encrypted iTunes backup before any modifications. Initiate Access Now contact.
+- **Day 0–3:** Access Now triage. Determination on whether commercial-spyware analysis (MVT) is in scope.
+- **Day 1:** IC3 report filed. State AG report filed.
+- **Day 3–7:** Local victim services contacted. Forensics firm scoping conversation.
+- **Day 7–14:** Forensics engagement begins. Lockdown runbooks executed on rebuilt devices (originals preserved as evidence).
+- **Day 14–30:** Forensics report delivered. Attorney engagement decision.
+- **Day 30+:** Number decoupling per `PHONE_NUMBER_DECOUPLING.md` Path A. Steady-state operations.
